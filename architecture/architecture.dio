@@ -1,0 +1,85 @@
+<mxfile host="65bd71144e">
+    <diagram id="qx7cbcH-kMcnPS7ODpWY" name="Page-1">
+        <mxGraphModel dx="669" dy="290" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="JS Renderer&lt;div&gt;Renders Frames and Sound in Browser&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="140" width="160" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="BackendRenderer&lt;div&gt;Renders Video and Audio&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="460" y="20" width="160" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="JS Controiller&lt;div&gt;Getting Inputs&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="55" y="340" width="150" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="ControllerState&lt;div&gt;Translates JS Data to Physical Controller State (Joystrick strobe)&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="450" width="160" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Cartridge Service&lt;div&gt;Reads ROM File&lt;/div&gt;&lt;div&gt;Handle Mappers - CPU see only addressable memory banks&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="600" width="150" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="CPU&lt;div&gt;Gets Opcodes&lt;/div&gt;&lt;div&gt;Gets Strobe State&lt;/div&gt;&lt;div&gt;Generate Interruptions Signals&lt;/div&gt;&lt;div&gt;Send data to PPU and APU&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="400" width="150" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="PPU&lt;div&gt;Gets Signals and Data from CPU&lt;/div&gt;&lt;div&gt;Generate VRAM State base on Data and VROM&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="690" y="25" width="150" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="APU&lt;div&gt;Gets CPU Signals and Data&lt;/div&gt;&lt;div&gt;Generates Memory&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="690" y="210" width="150" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="State Manager/Orchestrator&lt;div&gt;Emulator State: Reset,&amp;nbsp;&amp;nbsp;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;Run Game,,&lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;Inactive&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;Save/Loadf Game&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;OSD&lt;/span&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="230" width="170" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;entryX=0.451;entryY=0.975;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.993;exitY=0.465;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="12" target="3" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="450" y="290" as="sourcePoint"/>
+                        <mxPoint x="550" y="190" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="14" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" target="12" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="480" y="455" as="sourcePoint"/>
+                        <mxPoint x="580" y="355" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="15" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="2" target="12" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="270" y="340" as="sourcePoint"/>
+                        <mxPoint x="370" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="16" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;exitX=0.981;exitY=0.395;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.002;entryY=0.603;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="4" target="12" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="270" y="340" as="sourcePoint"/>
+                        <mxPoint x="370" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="17" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.019;entryY=0.612;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="3" target="8" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="580" y="340" as="sourcePoint"/>
+                        <mxPoint x="680" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" source="3" target="9" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="580" y="340" as="sourcePoint"/>
+                        <mxPoint x="680" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="19" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;exitX=1.016;exitY=0.362;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.019;entryY=0.331;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" source="5" target="7" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="580" y="450" as="sourcePoint"/>
+                        <mxPoint x="680" y="350" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;entryX=-0.002;entryY=0.421;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.646;exitDx=0;exitDy=0;exitPerimeter=0;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" source="5" target="6" edge="1">
+                    <mxGeometry width="100" height="100" relative="1" as="geometry">
+                        <mxPoint x="570" y="600" as="sourcePoint"/>
+                        <mxPoint x="670" y="500" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
