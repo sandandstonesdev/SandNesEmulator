@@ -1,8 +1,11 @@
+from emulator.cartridge.chr_rom_bank import CHRROMBank
+from emulator.cartridge.prg_rom_bank import PrgRomBank
+from emulator.cartridge.cartridge_map_router import CartridgeMapRouter
 from emulator.mapping.mapper_0 import Mapper0
 
 
 class Cartridge:
-    def __init__(self):
+    def __init__(self, cartridgeMapRouter: CartridgeMapRouter):
         self.pattern_table = None
         self.masked_rom = None
         self.work_ram = None
@@ -18,13 +21,9 @@ class Cartridge:
         self.chr_rom = None
         self.mapper_id = 0
         self.mapper = None
-        pass
+        self.cartridge_map_router = cartridgeMapRouter
 
-
-    def insert(self, rom_path):
-        self.read_rom(rom_path)
-
-    def read_rom(self, rom_path):
+    def insert_rom_file(self, rom_path):
         # Read iNES Header
         with open(rom_path, 'rb') as f:
             data = f.read()
@@ -49,7 +48,7 @@ class Cartridge:
         self.mapper_id = lower_mapper_bits | upper_mapper_bits >> 4
         if self.mapper_id == 0:
             print("Using Mapper 0 (NROM)")
-            self.mapper = Mapper0(self)
+            self.mapper = Mapper0()
 
 
         self.tv_system = (data[9] & 0x01)
@@ -58,18 +57,28 @@ class Cartridge:
         if self.trainer:
             read_index += 512
 
-        # Loop if more PRG or CHR banks
-        self.prg_rom = data[read_index:read_index + (self.prg_rom_chunks * 16384)]
+        self.prg_rom = PrgRomBank(data[read_index:read_index + (self.prg_rom_chunks * 16384)])
         read_index += self.prg_rom_chunks * 16384
-        self.chr_rom = data[read_index:read_index + (self.chr_rom_chunks * 8192)]
+        self.chr_rom = CHRROMBank(data[read_index:read_index + (self.chr_rom_chunks * 8192)])
         read_index += self.chr_rom_chunks * 8192
 
-    def read_prg(self, address):
-        return self.prg_rom[address]
+
+    def read(self, address):
+        mapped_device = self.cartridge_map_router.route_read(address)
+        if mapped_device.name == 'PRG_ROM':
+            return self.prg_rom.read(address)
+        elif mapped_device.name == 'CHR_ROM':
+            return self.chr_rom.read(address)
+
+        return 0x00
+
+    def write(self, address, value):
+        mapped_device = self.cartridge_map_router.route_write(address)
+        if mapped_device.name == 'PRG_ROM':
+            self.prg_rom.write(address, value)
+        elif mapped_device.name == 'CHR_ROM':
+            self.chr_rom.write(address, value)
+
+        # different read address is ignored
     
-    def read_chr(self, address):
-        return self.chr_rom[address]
     
-    # Here we can make Mapper facade methods
-    # def map_address(self, address):
-    #    return self.mapper.map_address(address)

@@ -24,7 +24,7 @@ class CPU:
 
     def tick(self):\
         # Fetch read is ok, there's map route inside bus
-        opcode = self.bus.read_prg(self.registers.pc)
+        opcode = self.bus.ram_read(self.registers.pc)
         # Decode
         decoded_data = self.execution_unit.decode(opcode, self.registers.pc)
         # Execute

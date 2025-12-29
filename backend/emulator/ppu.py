@@ -18,7 +18,7 @@ class PPU:
     def write_register(self, address, value):
         pass
 
-    def map_pattern_table(self, mapper: Mapper):
+    def map_pattern_table(self, mapper: Mapper0):
         pattern_table_size = 4096  # 4KB per pattern table
         self.pattern_tables = [
             mapper.get_pattern_table(0, pattern_table_size),
