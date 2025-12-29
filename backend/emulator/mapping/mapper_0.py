@@ -1,31 +1,10 @@
-from abc import ABC, abstractmethod
+from emulator.mapping.base_mapper import BaseMapper
 
-class Mapper(ABC):
-    def __init__(self, cartridge):
-        self.cartridge = cartridge
+# Mapper is memory map router
+# Input address from CPU/PPU/APU/Joypad
+# Output mapped address to Cartridge/RAM/PPU/APU/Joypad
 
-    @abstractmethod
-    def map_prg_read(self, address):
-        pass
-
-    @abstractmethod
-    def map_prg_write(self, address, value):
-        pass
-
-    @abstractmethod
-    def map_chr_read(self, address):
-        pass
-
-    @abstractmethod
-    def map_chr_write(self, address, value):
-        pass
-
-    @abstractmethod
-    def get_pattern_table(self, table_index, size):
-        pass
-
-
-class Mapper0(Mapper):
+class Mapper0(BaseMapper):
     def __init__(self):
         pass
 

@@ -1,16 +1,14 @@
-from backend.emulator.apu import APU
-from backend.emulator.bus import Bus
-from backend.emulator.cartridge import Cartridge
-from backend.emulator.cpu.cpu import CPU
-from backend.emulator.joypad import Joypad
-from backend.emulator.mapper import Mapper
-from backend.emulator.ppu import PPU
-from backend.emulator.ram import RAM
+from emulator.cpu import CPU
+from emulator.apu import APU
+from emulator.bus import Bus
+from emulator.cartridge import Cartridge
+from emulator.joypad import Joypad
+from emulator.mapping.memory_map_router import MemoryMapRouter
+from emulator.ppu import PPU
+from emulator.ram import RAM
 
 
 class Board:
-    cpu: CPU
-
     def __init__(self):
         self.master_clock = 0
 
@@ -19,8 +17,9 @@ class Board:
         self.apu = APU()
         self.ppu = PPU()
         self.joypad = Joypad()
+        self.memory_mam_router = MemoryMapRouter()
 
-        self.bus = Bus(self.ppu, self.apu, self.cartridge, self.ram)
+        self.bus = Bus(self.ppu, self.apu, self.cartridge, self.ram, self.memory_mam_router)
         
         self.cpu = CPU(self.bus)
         

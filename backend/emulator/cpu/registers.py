@@ -1,4 +1,12 @@
-from backend.emulator.cpu.internal import INTERRUPT
+# Status flags
+NEGATIVE = 0x80  # N
+OVERFLOW = 0x40  # V
+UNUSED   = 0x20  # -
+BREAK    = 0x10  # B
+DECIMAL  = 0x08  # D
+INTERRUPT= 0x04  # I
+ZERO     = 0x02  # Z
+CARRY    = 0x01  # C
 
 
 class Registers:

@@ -1,7 +1,6 @@
-from backend.emulator.cpu.cpu import CPU, Registers
-from backend.emulator.cpu.decoded_data import DecodedData
-from backend.emulator.cpu.opcodes import opcode_lookup
-
+from emulator.cpu.registers import Registers
+from emulator.cpu.decoded_data_dto import DecodedDataDTO
+from emulator.cpu.opcodes import opcode_lookup
 
 class ExecutionUnit:
     def __init__(self, registers: Registers):
@@ -9,9 +8,16 @@ class ExecutionUnit:
 
     def decode(self, opcode: int, current_pc: int):
         opcode_details = opcode_lookup[opcode]
-        return DecodedData(current_pc, opcode_details)
+        return DecodedDataDTO(
+            current_pc=current_pc,
+            addr_mode=opcode_details['addr_mode'],
+            cycles=opcode_details['cycles'],
+            mnemonic=opcode_details['mnemonic'],
+            length=opcode_details['length'],
+            prg_bytes=[]
+        )
         
-    def execute(self, decoded_data: DecodedData):
+    def execute(self, decoded_data: DecodedDataDTO):
         exec_func = getattr(self, decoded_data.mnemonic, None)
         if exec_func:
             exec_func(decoded_data)
@@ -20,236 +26,236 @@ class ExecutionUnit:
         
 
     #Arithmetic/Logic:
-    def ADC(self, decoded_data: DecodedData):
+    def ADC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SBC(self, decoded_data: DecodedData):
+    def SBC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def AND(self, decoded_data: DecodedData):
+    def AND(self, decoded_data: DecodedDataDTO):
         pass
 
-    def ORA(self, decoded_data: DecodedData):
+    def ORA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def EOR(self, decoded_data: DecodedData):
+    def EOR(self, decoded_data: DecodedDataDTO):
         pass
 
-    def CMP(self, decoded_data: DecodedData):
+    def CMP(self, decoded_data: DecodedDataDTO):
         pass
 
-    def CPX(self, decoded_data: DecodedData):
+    def CPX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def CPY(self, decoded_data: DecodedData):
+    def CPY(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BIT(self, decoded_data: DecodedData):
+    def BIT(self, decoded_data: DecodedDataDTO):
         pass
 
     # Shifts/Rotates:
-    def ASL(self, decoded_data: DecodedData):
+    def ASL(self, decoded_data: DecodedDataDTO):
         pass
 
-    def LSR(self, decoded_data: DecodedData):
+    def LSR(self, decoded_data: DecodedDataDTO):
         pass
 
-    def ROL(self, decoded_data: DecodedData):
+    def ROL(self, decoded_data: DecodedDataDTO):
         pass
 
-    def ROR(self, decoded_data: DecodedData):
+    def ROR(self, decoded_data: DecodedDataDTO):
         pass
 
 
     # Registers/Transfer:
-    def LDA(self, decoded_data: DecodedData):
+    def LDA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def LDX(self, decoded_data: DecodedData):
+    def LDX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def LDY(self, decoded_data: DecodedData):
+    def LDY(self, decoded_data: DecodedDataDTO):
         pass
 
-    def STA(self, decoded_data: DecodedData):
+    def STA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def STX(self, decoded_data: DecodedData):
+    def STX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def STY(self, decoded_data: DecodedData):
+    def STY(self, decoded_data: DecodedDataDTO):
         pass
-    def TAX(self, decoded_data: DecodedData):
-        pass
-
-    def TXA(self, decoded_data: DecodedData):
+    def TAX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def TAY(self, decoded_data: DecodedData):
+    def TXA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def TYA(self, decoded_data: DecodedData):
+    def TAY(self, decoded_data: DecodedDataDTO):
         pass
 
-    def TSX(self, decoded_data: DecodedData):
+    def TYA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def TXS(self, decoded_data: DecodedData):
+    def TSX(self, decoded_data: DecodedDataDTO):
+        pass
+
+    def TXS(self, decoded_data: DecodedDataDTO):
         pass
 
     #Stack:
-    def PHA(self, decoded_data: DecodedData):
+    def PHA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def PLA(self, decoded_data: DecodedData):
+    def PLA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def PHP(self, decoded_data: DecodedData):
+    def PHP(self, decoded_data: DecodedDataDTO):
         pass
 
-    def PLP(self, decoded_data: DecodedData):
+    def PLP(self, decoded_data: DecodedDataDTO):
         pass
 
     #Increment/Decrement:
-    def INC(self, decoded_data: DecodedData):
+    def INC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def INX(self, decoded_data: DecodedData):
+    def INX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def INY(self, decoded_data: DecodedData):
+    def INY(self, decoded_data: DecodedDataDTO):
         pass
 
-    def DEC(self, decoded_data: DecodedData):
+    def DEC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def DEX(self, decoded_data: DecodedData):
+    def DEX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def DEY(self, decoded_data: DecodedData):
+    def DEY(self, decoded_data: DecodedDataDTO):
         pass
 
 
     # Branch/Jump:
-    def JMP(self, decoded_data: DecodedData):
+    def JMP(self, decoded_data: DecodedDataDTO):
         pass
 
-    def JSR(self, decoded_data: DecodedData):
+    def JSR(self, decoded_data: DecodedDataDTO):
         pass
 
-    def RTS(self, decoded_data: DecodedData):
+    def RTS(self, decoded_data: DecodedDataDTO):
         pass
 
-    def RTI(self, decoded_data: DecodedData):
+    def RTI(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BCC(self, decoded_data: DecodedData):
+    def BCC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BCS(self, decoded_data: DecodedData):
+    def BCS(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BEQ(self, decoded_data: DecodedData):
+    def BEQ(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BMI(self, decoded_data: DecodedData):
+    def BMI(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BNE(self, decoded_data: DecodedData):
+    def BNE(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BPL(self, decoded_data: DecodedData):
+    def BPL(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BVC(self, decoded_data: DecodedData):
+    def BVC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def BVS(self, decoded_data: DecodedData):
+    def BVS(self, decoded_data: DecodedDataDTO):
         pass
 
     #Flags:
-    def CLC(self, decoded_data: DecodedData):
+    def CLC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SEC(self, decoded_data: DecodedData):
+    def SEC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def CLD(self, decoded_data: DecodedData):
+    def CLD(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SED(self, decoded_data: DecodedData):
+    def SED(self, decoded_data: DecodedDataDTO):
         pass
 
-    def CLI(self, decoded_data: DecodedData):
+    def CLI(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SEI(self, decoded_data: DecodedData):
+    def SEI(self, decoded_data: DecodedDataDTO):
         pass
 
-    def CLV(self, decoded_data: DecodedData):
+    def CLV(self, decoded_data: DecodedDataDTO):
         pass
 
     # NOPs:
-    def NOP(self, decoded_data: DecodedData):
+    def NOP(self, decoded_data: DecodedDataDTO):
         pass
 
     # Undocumented/Illegal:
-    def SLO(self, decoded_data: DecodedData):
+    def SLO(self, decoded_data: DecodedDataDTO):
         pass
 
-    def RLA(self, decoded_data: DecodedData):
+    def RLA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SRE(self, decoded_data: DecodedData):
+    def SRE(self, decoded_data: DecodedDataDTO):
         pass
 
-    def RRA(self, decoded_data: DecodedData):
+    def RRA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SAX(self, decoded_data: DecodedData):
+    def SAX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def LAX(self, decoded_data: DecodedData):
+    def LAX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def DCP(self, decoded_data: DecodedData):
+    def DCP(self, decoded_data: DecodedDataDTO):
         pass
 
-    def ISC(self, decoded_data: DecodedData):
+    def ISC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def ANC(self, decoded_data: DecodedData):
+    def ANC(self, decoded_data: DecodedDataDTO):
         pass
 
-    def ALR(self, decoded_data: DecodedData):
+    def ALR(self, decoded_data: DecodedDataDTO):
         pass
 
-    def ARR(self, decoded_data: DecodedData):
+    def ARR(self, decoded_data: DecodedDataDTO):
         pass
 
-    def XAA(self, decoded_data: DecodedData):
+    def XAA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def TAS(self, decoded_data: DecodedData):
+    def TAS(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SHY(self, decoded_data: DecodedData):
+    def SHY(self, decoded_data: DecodedDataDTO):
         pass
 
-    def SHX(self, decoded_data: DecodedData):
+    def SHX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def LAS(self, decoded_data: DecodedData):
+    def LAS(self, decoded_data: DecodedDataDTO):
         pass
 
-    def AHX(self, decoded_data: DecodedData):
+    def AHX(self, decoded_data: DecodedDataDTO):
         pass
 
-    def LXA(self, decoded_data: DecodedData):
+    def LXA(self, decoded_data: DecodedDataDTO):
         pass
 
-    def AXS(self, decoded_data: DecodedData):
+    def AXS(self, decoded_data: DecodedDataDTO):
         pass
 
-    def KIL(self, decoded_data: DecodedData):
+    def KIL(self, decoded_data: DecodedDataDTO):
         pass
