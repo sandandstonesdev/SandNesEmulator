@@ -1,4 +1,4 @@
-from backend.emulator.mapper import Mapper
+from emulator.mapping.mapper_0 import Mapper0
 
 
 class PPU:
