@@ -1,7 +1,8 @@
+from emulator.cartridge.cartridge_map_router import CartridgeMapRouter
 from emulator.cpu import CPU
 from emulator.apu import APU
 from emulator.bus import Bus
-from emulator.cartridge import Cartridge
+from emulator.cartridge.cartridge import Cartridge
 from emulator.joypad import Joypad
 from emulator.mapping.memory_map_router import MemoryMapRouter
 from emulator.ppu import PPU
@@ -13,11 +14,14 @@ class Board:
         self.master_clock = 0
 
         self.ram = RAM()
-        self.cartridge = Cartridge()
         self.apu = APU()
         self.ppu = PPU()
         self.joypad = Joypad()
         self.memory_mam_router = MemoryMapRouter()
+
+        self.cartridge_map_router = CartridgeMapRouter()
+        self.cartridge = Cartridge(self.cartridge_map_router)
+        
 
         self.bus = Bus(self.ppu, self.apu, self.cartridge, self.ram, self.memory_mam_router)
         
@@ -33,7 +37,7 @@ class Board:
 
     # Open NES ROM In GUI
     def insert_cartridge(self, cartridge):
-        cartridge.insert(rom_path="")
+        cartridge.insert_rom_file(rom_path="")
         pass
 
     # On Power On Button in GUI

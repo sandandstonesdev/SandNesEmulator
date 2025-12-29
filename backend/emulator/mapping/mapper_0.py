@@ -27,3 +27,6 @@ class Mapper0(BaseMapper):
         # It maps address for:
         # self.cartridge.write_chr(address, value)
         pass
+
+    def get_pattern_table(self, table_index, size):
+        return super().get_pattern_table(table_index, size)

@@ -1,11 +1,10 @@
 
-from emulator.mapping.device_maps import READ_DEVICE_MAP, WRITE_DEVICE_MAP
+from emulator.cartridge.mapper_0_maps import MAPPER_0_READ_MAP, MAPPER_0_WRITE_MAP
 
-class MemoryMapRouter:
+class CartridgeMapRouter:
     def __init__(self):
-        self.read_device_map = READ_DEVICE_MAP
-        self.write_device_map = WRITE_DEVICE_MAP
-
+        self.read_device_map = MAPPER_0_READ_MAP
+        self.write_device_map = MAPPER_0_WRITE_MAP
 
     def route_read(self, address):
         for (start, end), device in self.read_device_map.items():
@@ -19,4 +18,3 @@ class MemoryMapRouter:
             if start <= address <= end:
                 return device
         return None
-
