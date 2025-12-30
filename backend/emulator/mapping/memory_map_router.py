@@ -13,7 +13,6 @@ class MemoryMapRouter:
                 return device
         return None
 
-
     def route_write(self, address, value):
         for (start, end), device in self.write_device_map.items():
             if start <= address <= end:

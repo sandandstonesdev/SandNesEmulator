@@ -23,26 +23,26 @@ class Bus:
         
     def ram_read(self, address):
         mapped_device = self.memory_map_router.route_read(address)
-        if mapped_device == 'CARTRIDGE_SPACE':
-            return self.cartridge.read_prg(address)
-        elif mapped_device == 'PPU_REGISTERS':
+        if mapped_device.name == 'CARTRIDGE_SPACE':
+            return self.cartridge.read(address)
+        elif mapped_device.name == 'PPU_REGISTERS':
             return self.ppu.read(address)
-        elif mapped_device == 'APU_IO_REGISTERS':
+        elif mapped_device.name == 'APU_IO_REGISTERS':
             return self.apu.read(address)
-        elif mapped_device == 'JOYPAD':
+        elif mapped_device.name == 'JOYPAD':
             return self.joypad.read(address)
 
         return self.ram.read(address)
 
     def ram_write(self, address, value):
         mapped_device = self.memory_map_router.route_write(address, value)
-        if mapped_device == 'CARTRIDGE_SPACE':
+        if mapped_device.name == 'CARTRIDGE_SPACE':
             return self.cartridge.write_prg(address, value)
-        elif mapped_device == 'PPU_REGISTERS':
+        elif mapped_device.name == 'PPU_REGISTERS':
              return self.ppu.write(address, value)
-        elif mapped_device == 'APU_IO_REGISTERS':
+        elif mapped_device.name == 'APU_IO_REGISTERS':
             return self.apu.write(address, value)
-        elif mapped_device == 'JOYPAD':
+        elif mapped_device.name == 'JOYPAD':
             return self.joypad.write(address, value)
         
         return self.ram.write(address, value)
