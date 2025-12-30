@@ -1,13 +1,6 @@
 # Status flags
-NEGATIVE = 0x80  # N
-OVERFLOW = 0x40  # V
-UNUSED   = 0x20  # -
-BREAK    = 0x10  # B
-DECIMAL  = 0x08  # D
-INTERRUPT= 0x04  # I
-ZERO     = 0x02  # Z
-CARRY    = 0x01  # C
-
+from emulator.cpu.stack import Stack
+from emulator.cpu.status_flags import DECIMAL, INTERRUPT, UNUSED, StatusFlags
 
 class Registers:
     def __init__(self):
@@ -15,10 +8,9 @@ class Registers:
         self.x = 0  # X Register
         self.y = 0  # Y Register
         self.pc = 0  # Program Counter
-        self.s = 0x00  # Stack Pointer
-        self.p = 0x00  # Status Register
+        self.s = Stack()  # Stack Pointer
+        self.p = StatusFlags()  # Status Register
         self.cycles = 0  # Cycle count
-        self.address_bus = 0  # Address bus
         self.d = 0  # Data bus
         self.adl = 0  # Address Low byte
         self.adh = 0  # Address High byte
@@ -29,7 +21,20 @@ class Registers:
         self.x = 0
         self.y = 0
         self.pc = 0
-        self.s = 0xFD
-        self.p = 0x00 | INTERRUPT
-        self.address_bus = 0  # Address bus
-        self.data_bus = 0  # Data bus
+        self.s.push(0xFD)  # Stack Pointer starts at 0xFD
+        self.s.push(0x01)  # Stack Pointer high byte
+        self.s.push(0xFF)  # Stack Pointer highest byte
+        self.cycles = 0 # ??
+        self.p.set_flag(UNUSED, 1)  # Interrupt Disable set on reset
+        self.p.set_flag(INTERRUPT, 1)  # Interrupt Disable set on reset
+        self.p.set_flag(DECIMAL, 0)  # Clear Decimal Mode
+        self.adl = 0  # Address Low byte
+        self.adh = 0  # Address High byte
+        self.d = 0  # Data bus
+        self.d = 0  # Data bus
+
+    def set_flag(self, flag, condition):
+        self.p.set_flag(flag, 1 if condition else 0)
+        
+    def get_flag(self, flag):
+        return self.p.get_flag(flag)

@@ -1,4 +1,4 @@
-from emulator.cpu.instructions import ExecutionUnit
+from emulator.cpu.instruction_processor import InstructionProcessor
 from emulator.cpu.registers import Registers
 from emulator.bus import Bus
 
@@ -10,8 +10,7 @@ class CPU:
     def __init__(self, bus: Bus):
         self.bus = bus
         self.registers = Registers()
-        # Execution using should see Bus and Registers
-        self.execution_unit = ExecutionUnit(self.registers)
+        self.instructions= InstructionProcessor(self.registers, self.bus)
         pass
 
     def power_on(self):
@@ -23,16 +22,15 @@ class CPU:
         pass
 
     def tick(self):\
+    
         # Fetch read is ok, there's map route inside bus
-        opcode = self.bus.ram_read(self.registers.pc)
+        #opcode = self.bus.ram_read(self.registers.pc)
+        opcode = self.instructions.fetch_opcode()
+        
         # Decode
-        decoded_data = self.execution_unit.decode(opcode, self.registers.pc)
+        decoded_data = self.instructions.decode(opcode, self.registers.pc)
         # Execute
-        self.execution_unit.execute(decoded_data)
-
-        # Update PC and Cycles (should be done in Executor ideally)
-        self.registers.pc += decoded_data.length
-        self.registers.cycles += decoded_data.cycles
+        self.instructions.execute(decoded_data)
 
     def irq(self):
         pass
