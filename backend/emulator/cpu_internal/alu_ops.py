@@ -5,7 +5,7 @@ from emulator.cpu.decoded_data_dto import DecodedDataDTO
 class ALUOps:
         def __init__(self, registers: Registers, bus: Bus):
                 self.registers = registers
-                self.bus = bus
+                self.bus = bus # Need for stack
 
         def adc_op(self, decoded_data: DecodedDataDTO):
                 temp = self.registers.a + self.registers.d + self.registers.p.C

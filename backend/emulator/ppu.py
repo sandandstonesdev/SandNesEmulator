@@ -1,5 +1,4 @@
-from emulator.mapping.mapper_0 import Mapper0
-
+from emulator.mapping.base_mapper import BaseMapper
 
 class PPU:
     def __init__(self):
@@ -18,7 +17,7 @@ class PPU:
     def write_register(self, address, value):
         pass
 
-    def map_pattern_table(self, mapper: Mapper0):
+    def map_pattern_table(self, mapper: BaseMapper):
         pattern_table_size = 4096  # 4KB per pattern table
         self.pattern_tables = [
             mapper.get_pattern_table(0, pattern_table_size),

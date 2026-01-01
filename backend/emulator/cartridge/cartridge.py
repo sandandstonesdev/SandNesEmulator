@@ -1,11 +1,10 @@
+from emulator.mapping.mapper_0 import Mapper0
 from emulator.cartridge.chr_rom_bank import CHRROMBank
 from emulator.cartridge.prg_rom_bank import PrgRomBank
-from emulator.cartridge.cartridge_map_router import CartridgeMapRouter
-from emulator.mapping.mapper_0 import Mapper0
 
 
 class Cartridge:
-    def __init__(self, cartridgeMapRouter: CartridgeMapRouter):
+    def __init__(self):
         self.pattern_table = None
         self.masked_rom = None
         self.work_ram = None
@@ -21,7 +20,6 @@ class Cartridge:
         self.chr_rom = None
         self.mapper_id = 0
         self.mapper = None
-        self.cartridge_map_router = cartridgeMapRouter
 
     def insert_rom_file(self, rom_path):
         # Read iNES Header
@@ -64,7 +62,7 @@ class Cartridge:
 
 
     def read(self, address):
-        mapped_device = self.cartridge_map_router.route_read(address)
+        mapped_device = self.mapper.map_read(address)
         if mapped_device.name == 'PRG_ROM':
             return self.prg_rom.read(address)
         elif mapped_device.name == 'CHR_ROM':
@@ -73,7 +71,7 @@ class Cartridge:
         return 0x00
 
     def write(self, address, value):
-        mapped_device = self.cartridge_map_router.route_write(address)
+        mapped_device = self.mapper.route_write(address)
         if mapped_device.name == 'PRG_ROM':
             self.prg_rom.write(address, value)
         elif mapped_device.name == 'CHR_ROM':

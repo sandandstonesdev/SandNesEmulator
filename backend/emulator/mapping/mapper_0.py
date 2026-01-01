@@ -1,3 +1,4 @@
+from emulator.cartridge.mapper_0_maps import MAPPER_0_READ_MAP, MAPPER_0_WRITE_MAP
 from emulator.mapping.base_mapper import BaseMapper
 
 # Mapper is memory map router
@@ -6,27 +7,18 @@ from emulator.mapping.base_mapper import BaseMapper
 
 class Mapper0(BaseMapper):
     def __init__(self):
-        pass
+        self.read_device_map = MAPPER_0_READ_MAP
+        self.write_device_map = MAPPER_0_WRITE_MAP
 
-    def map_prg_read(self, address):
-        # It maps address for:
-        #self.cartridge.read_prg(address)
-        pass
+    def map_read(self, address):
+        for (start, end), device in self.read_device_map.items():
+            if start <= address <= end:
+                return device
+        return None
 
-    def map_prg_write(self, address, value):
-        # It maps address for:
-        # self.cartridge.write_prg(address, value)
-        pass
 
-    def map_chr_read(self, address):
-        # It maps address for:
-        # self.cartridge.read_chr(address)
-        pass
-
-    def map_chr_write(self, address, value):
-        # It maps address for:
-        # self.cartridge.write_chr(address, value)
-        pass
-
-    def get_pattern_table(self, table_index, size):
-        return super().get_pattern_table(table_index, size)
+    def map_write(self, address, value):
+        for (start, end), device in self.write_device_map.items():
+            if start <= address <= end:
+                return device
+        return None

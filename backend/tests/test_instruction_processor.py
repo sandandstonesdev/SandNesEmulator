@@ -1,4 +1,3 @@
-import pytest
 from emulator.cpu.instruction_processor import InstructionProcessor
 from emulator.cpu.registers import Registers
 from emulator.bus import Bus
@@ -18,8 +17,8 @@ class DummyBus(Bus):
         self.memory[address] = value
 
 def make_processor():
-    registers = Registers()
     bus = DummyBus()
+    registers = Registers(bus)
     return InstructionProcessor(registers, bus), registers, bus
 
 def test_adc_immediate():
