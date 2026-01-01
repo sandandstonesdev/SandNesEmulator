@@ -1,10 +1,7 @@
+from emulator.cpu.status_flags import INTERRUPT
 from emulator.cpu.instruction_processor import InstructionProcessor
 from emulator.cpu.registers import Registers
 from emulator.bus import Bus
-
-# Decouple Fetcher
-# Decouple Decoder
-# Decouple Executor
 
 class CPU:
     def __init__(self, bus: Bus):
@@ -22,19 +19,15 @@ class CPU:
         self.cycles = 8
         pass
 
-    def tick(self):\
-    
-        # Fetch read is ok, there's map route inside bus
-        #opcode = self.bus.ram_read(self.registers.pc)
+    def tick(self):
         opcode = self.instructions.fetch_opcode()
         
-        # Decode
         decoded_data = self.instructions.decode(opcode, self.registers.pc)
-        # Execute
+        
         self.instructions.execute(decoded_data)
 
     def irq(self):
-        pass
+        self.instructions.irq()
 
     def nmi(self):
-        pass
+        self.instructions.nmi()

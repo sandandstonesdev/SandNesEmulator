@@ -9,7 +9,7 @@ class Registers:
         self.x = 0  # X Register
         self.y = 0  # Y Register
         self.pc = 0  # Program Counter
-        self.s = Stack(bus)  # Stack Pointer
+        self.s = Stack(bus)  # Stack Register
         self.p = StatusFlags()  # Status Register
         self.cycles = 0  # Cycle count
         self.d = 0  # Data bus
@@ -27,9 +27,9 @@ class Registers:
         self.s.push(0x01)  # Stack Pointer high byte
         self.s.push(0xFF)  # Stack Pointer highest byte
         self.cycles = 0 # ??
-        self.p.set_flag(UNUSED, 1)  # Interrupt Disable set on reset
-        self.p.set_flag(INTERRUPT, 1)  # Interrupt Disable set on reset
-        self.p.set_flag(DECIMAL, 0)  # Clear Decimal Mode
+        self.set_flag(UNUSED, 1)  # Interrupt Disable set on reset
+        self.set_flag(INTERRUPT, 1)  # Interrupt Disable set on reset
+        self.set_flag(DECIMAL, 0)  # Clear Decimal Mode
         self.adl = 0  # Address Low byte
         self.adh = 0  # Address High byte
         self.d = 0  # Data bus
@@ -40,12 +40,34 @@ class Registers:
         
     def get_flag(self, flag):
         return self.p.get_flag(flag)
-    
+
     def push_stack(self, value):
         self.s.push(value)
 
     def pop_stack(self):
         return self.s.pop()
     
+    def set_pc(self, address_high: int, address_low: int):
+        self.pc = (address_high << 8) | address_low
+
+    def push_pc(self):
+        pc_hi = (self.pc >> 8) & 0xFF
+        pc_lo = self.pc & 0xFF
+        self.s.push(pc_hi)
+        self.s.push(pc_lo)
+
+    def pop_pc(self):
+        pc_lo = self.s.pop()
+        pc_hi = self.s.pop()
+        self.pc = (pc_hi << 8) | pc_lo
+
     def increment_pc(self, value=1):
-        self.pc = (self.pc + value) & 0xFFFF  # Wrap around at 16 bits
+        self.pc = (self.pc + value) & 0xFFFF
+
+    def push_status(self):
+        status_byte = self.p.get_byte()
+        self.s.push(status_byte)
+
+    def pop_status(self):
+        status_byte = self.s.pop()
+        self.p.set_byte(status_byte)
