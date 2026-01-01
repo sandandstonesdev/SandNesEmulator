@@ -18,4 +18,3 @@ class MemoryMapRouter:
             if start <= address <= end:
                 return device
         return None
-

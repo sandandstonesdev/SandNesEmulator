@@ -9,11 +9,12 @@ from emulator.bus import Bus
 class CPU:
     def __init__(self, bus: Bus):
         self.bus = bus
-        self.registers = Registers()
+        self.registers = Registers(bus)
         self.instructions= InstructionProcessor(self.registers, self.bus)
         pass
 
     def power_on(self):
+        self.reset()
         pass
 
     def reset(self):

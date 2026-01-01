@@ -5,21 +5,9 @@ class BaseMapper(ABC):
         self.cartridge = cartridge
 
     @abstractmethod
-    def map_prg_read(self, address):
+    def map_read(self, address):
         pass
 
     @abstractmethod
-    def map_prg_write(self, address, value):
-        pass
-
-    @abstractmethod
-    def map_chr_read(self, address):
-        pass
-
-    @abstractmethod
-    def map_chr_write(self, address, value):
-        pass
-
-    @abstractmethod
-    def get_pattern_table(self, table_index, size):
+    def map_write(self, address, value):
         pass

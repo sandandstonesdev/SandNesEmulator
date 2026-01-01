@@ -1,14 +1,15 @@
 # Status flags
+from emulator.bus import Bus
 from emulator.cpu.stack import Stack
 from emulator.cpu.status_flags import DECIMAL, INTERRUPT, UNUSED, StatusFlags
 
 class Registers:
-    def __init__(self):
+    def __init__(self, bus: Bus):
         self.a = 0  # Accumulator
         self.x = 0  # X Register
         self.y = 0  # Y Register
         self.pc = 0  # Program Counter
-        self.s = Stack()  # Stack Pointer
+        self.s = Stack(bus)  # Stack Pointer
         self.p = StatusFlags()  # Status Register
         self.cycles = 0  # Cycle count
         self.d = 0  # Data bus
@@ -21,6 +22,7 @@ class Registers:
         self.x = 0
         self.y = 0
         self.pc = 0
+        self.s.reset()
         self.s.push(0xFD)  # Stack Pointer starts at 0xFD
         self.s.push(0x01)  # Stack Pointer high byte
         self.s.push(0xFF)  # Stack Pointer highest byte
@@ -38,3 +40,12 @@ class Registers:
         
     def get_flag(self, flag):
         return self.p.get_flag(flag)
+    
+    def push_stack(self, value):
+        self.s.push(value)
+
+    def pop_stack(self):
+        return self.s.pop()
+    
+    def increment_pc(self, value=1):
+        self.pc = (self.pc + value) & 0xFFFF  # Wrap around at 16 bits

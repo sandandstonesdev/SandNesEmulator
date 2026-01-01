@@ -1,5 +1,4 @@
 from emulator.cartridge.cartridge import Cartridge
-from emulator.cartridge.cartridge_map_router import CartridgeMapRouter
 
 
 def read_dummy_rom():
@@ -12,8 +11,7 @@ def read_dummy_rom():
     return fake_rom_data
 
 def test_cartridge_can_load_and_read_prg(mocker):
-    cartridge_map_router = CartridgeMapRouter()
-    cartridge = Cartridge(cartridge_map_router)
+    cartridge = Cartridge()
 
     rom = read_dummy_rom()
     mock_file = mocker.patch("builtins.open", mocker.mock_open())
