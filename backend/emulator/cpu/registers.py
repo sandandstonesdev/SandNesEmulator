@@ -1,5 +1,5 @@
 # Status flags
-from emulator.bus import Bus
+from emulator.board.bus import Bus
 from emulator.cpu.stack import Stack
 from emulator.cpu.status_flags import DECIMAL, INTERRUPT, UNUSED, StatusFlags
 

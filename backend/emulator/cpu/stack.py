@@ -1,4 +1,4 @@
-from emulator.bus import Bus
+from emulator.board.bus import Bus
 
 
 class Stack:

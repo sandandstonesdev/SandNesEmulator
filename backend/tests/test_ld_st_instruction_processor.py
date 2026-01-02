@@ -1,6 +1,6 @@
 from emulator.cpu.instruction_processor import InstructionProcessor
 from emulator.cpu.registers import Registers
-from emulator.bus import Bus
+from emulator.board.bus import Bus
 
 class DummyBus(Bus):
     def __init__(self):

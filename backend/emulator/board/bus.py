@@ -5,7 +5,7 @@ from emulator.apu import APU
 from emulator.cartridge.cartridge import Cartridge
 from emulator.joypad import Joypad
 from emulator.mapping.memory_map_router import MemoryMapRouter
-from emulator.ppu import PPU
+from emulator.ppu.ppu import PPU
 from emulator.ram import RAM
 
 
@@ -23,6 +23,8 @@ class Bus:
         self.ram = ram
         self.joypad = joypad
         self.memory_map_router = memoryMapRouter
+        self.master_clock = 0
+        
 
     def ram_read(self, address):
         mapped_device = self.memory_map_router.route_read(address)
@@ -67,11 +69,10 @@ class Bus:
     def tick(self):
         # Note: CPU/PPU => 1/3
         self.cpu.tick()
-        self.ppu.tick()
-        self.apu.tick()
-
-    def insert_rom(self):
-        self.cartridge.insert_rom_file(rom_path="")
+        for _ in range(3):
+            self.ppu.tick()
+        #self.apu.tick()
+        self.master_clock += 1
 
     def power_on(self):
         self.cpu.power_on()
@@ -79,12 +80,16 @@ class Bus:
     def reset(self):
         self.cpu.reset()
 
+    def insert_rom(self):
+        self.cartridge.insert_rom_file(rom_path="")
+
+    
     def power_off(self):
         pass
 
     def get_frame(self):
         return self.ppu.get_frame()
 
-    def input_controller_state(self, controller_state):
+    def update_controller(self, controller_state):
         #self.joypad.update_state(controller_state)
         pass

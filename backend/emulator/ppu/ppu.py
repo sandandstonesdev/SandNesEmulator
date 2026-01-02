@@ -1,7 +1,13 @@
+from emulator.ppu.ppu_instructions import PPUInstructions
+from emulator.ppu.ppu_registers import PPURegisters
+from emulator.board.interrupt_info import InterruptInfo
 from emulator.mapping.base_mapper import BaseMapper
 
 class PPU:
-    def __init__(self):
+    def __init__(self, interrupt_info: InterruptInfo):
+        self.ppu_registers = PPURegisters()
+        self.ppu_instructions = PPUInstructions(self.ppu_registers, interrupt_info)
+        self.interrupt_info = interrupt_info
         # Object Attribute Memory (OAM) - 256 bytes
         self.OAM = [0x00] * 256  
         # Name Tables (2KB) and Attribute Tables (64B)
@@ -31,6 +37,9 @@ class PPU:
     def tick(self):
         # 341 dots per scanline
         # 262 scanlines per frame
+        pass
+
+    def render_frame(self):
         pass
 
     def get_frame(self):

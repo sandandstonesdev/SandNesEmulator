@@ -4,6 +4,8 @@ class NESDevice(Enum):
     RAM_ZERO_PAGE = auto()
     RAMSTACK = auto()
     RAM_GENERAL_PURPOSE = auto()
+    RAM_OAM = auto()
+    RAM_MIRRORED = auto()
     RAM = auto()
     STACK = auto()
     PPU_REGISTERS = auto()
