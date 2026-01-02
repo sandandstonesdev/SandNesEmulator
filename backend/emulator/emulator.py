@@ -1,4 +1,4 @@
-from emulator.board import Board
+from emulator.board.board import Board
 
 class Emulator:
     def __init__(self, name):

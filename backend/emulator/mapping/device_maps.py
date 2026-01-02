@@ -4,7 +4,9 @@ from emulator.mapping.nes_device import NESDevice
 READ_DEVICE_MAP = {
     (0x0000, 0x00FF): NESDevice.RAM_ZERO_PAGE,  # Zero Page
     (0x0100, 0x01FF): NESDevice.STACK,  # Stack
-    (0x0200, 0x1FFF): NESDevice.RAM_GENERAL_PURPOSE,  # General Purpose RAM
+    (0x0200, 0x02ff): NESDevice.RAM_OAM,  # General Purpose RAM
+    (0x0300, 0x07FF): NESDevice.RAM_GENERAL_PURPOSE,  # General Purpose RAM
+    (0x0800, 0x1FFF): NESDevice.RAM_MIRRORED,  # Mirrored RAM
     (0x2000, 0x3FFF): NESDevice.PPU_REGISTERS,
     (0x4000, 0x4015): NESDevice.APU_IO_REGISTERS,
     (0x4016, 0x4016): NESDevice.JOYPAD1,  # Joypad 1 (read)
@@ -18,7 +20,9 @@ READ_DEVICE_MAP = {
 WRITE_DEVICE_MAP = {
     (0x0000, 0x00FF): NESDevice.RAM_ZERO_PAGE,  # Zero Page
     (0x0100, 0x01FF): NESDevice.STACK,  # Stack
-    (0x0200, 0x1FFF): NESDevice.RAM_GENERAL_PURPOSE,  # General Purpose RAM
+    (0x0200, 0x03FF): NESDevice.RAM_OAM,  # OAM Memory
+    (0x0300, 0x07FF): NESDevice.RAM_GENERAL_PURPOSE,  # General Purpose RAM
+    (0x0800, 0x1FFF): NESDevice.RAM_MIRRORED,  # Mirrored RAM
     (0x2000, 0x3FFF): NESDevice.PPU_REGISTERS,
     (0x4000, 0x4013): NESDevice.APU_IO_REGISTERS,
     (0x4014, 0x4014): NESDevice.OAM_DMA,  # PPU OAMDMA (write)

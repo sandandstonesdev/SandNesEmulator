@@ -1,4 +1,4 @@
-from emulator.bus import Bus
+from emulator.board.bus import Bus
 from emulator.cpu.registers import Registers
 from emulator.cpu.status_flags import NEGATIVE, ZERO
 

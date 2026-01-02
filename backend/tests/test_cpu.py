@@ -1,7 +1,8 @@
+from emulator.board.interrupt_info import InterruptInfo
 from emulator.mapping.mapper_0 import Mapper0
-from emulator.bus import Bus
+from emulator.board.bus import Bus
 from emulator.cpu.cpu import CPU
-from emulator.ppu import PPU
+from emulator.ppu.ppu import PPU
 from emulator.apu import APU
 from emulator.cartridge.cartridge import Cartridge
 from emulator.ram import RAM
@@ -9,8 +10,9 @@ from emulator.joypad import Joypad
 from emulator.mapping.memory_map_router import MemoryMapRouter
 
 def test_cpu_tick_opcodes(mocker):
-    ppu = PPU()
-    apu = APU()
+    interrupt_info = InterruptInfo()
+    ppu = PPU(interrupt_info)
+    apu = APU(interrupt_info)
     ram = RAM()
     joypad = Joypad()
     memory_map_router = MemoryMapRouter()
@@ -24,7 +26,7 @@ def test_cpu_tick_opcodes(mocker):
 
 
     bus = Bus(ppu, apu, cartridge, ram, joypad, memory_map_router)
-    cpu = CPU(bus)
+    cpu = CPU(bus, interrupt_info)
     cpu.registers.pc = 0x8000
 
     # Act

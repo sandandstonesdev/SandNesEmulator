@@ -4,7 +4,7 @@ from emulator.cpu.status_flags import INTERRUPT
 from emulator.cpu_internal.opcode_lookup import OpcodeLookup
 from emulator.cpu_internal.addr_ops import AddrOps
 from emulator.cpu_internal.alu_ops import ALUOps
-from emulator.bus import Bus
+from emulator.board.bus import Bus
 from emulator.cpu.registers import Registers
 from emulator.cpu.decoded_data_dto import DecodedDataDTO
 
