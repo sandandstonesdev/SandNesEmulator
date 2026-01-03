@@ -1,7 +1,8 @@
+from emulator.mapping.io_register_router import IORegisterRouter
 from emulator.board.interrupt_info import InterruptInfo
 from emulator.cpu.registers import Registers
 from emulator.cpu.cpu import CPU
-from emulator.apu import APU
+from emulator.apu.apu import APU
 from emulator.board.bus import Bus
 from emulator.cartridge.cartridge import Cartridge
 from emulator.joypad import Joypad
@@ -15,11 +16,14 @@ class Board:
         self.master_clock = 0
 
         self.interrupt_info = InterruptInfo()
+        self.io_register_router = IORegisterRouter()
 
+        self.joypad = Joypad(self.io_register_router)
+        
         self.ram = RAM()
-        self.apu = APU()
-        self.ppu = PPU()
-        self.joypad = Joypad()
+        self.apu = APU(self.io_register_router,self.interrupt_info)
+        self.ppu = PPU(self.io_register_router, self.interrupt_info)
+        
         self.memory_map_router = MemoryMapRouter()
         self.cartridge = Cartridge()
         
