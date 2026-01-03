@@ -1,4 +1,4 @@
-from emulator.cartridge.cartridge_memory_type import CartridgeMemoryType
+from emulator.mapping.cartridge_memory_type import CartridgeMemoryType
 
 # NES Mapper 0 (NROM) memory map
 MAPPER_0_READ_MAP = {

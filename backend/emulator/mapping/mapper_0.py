@@ -1,4 +1,4 @@
-from emulator.cartridge.mapper_0_maps import MAPPER_0_READ_MAP, MAPPER_0_WRITE_MAP
+from emulator.mapping.mapper_0_maps import MAPPER_0_READ_MAP, MAPPER_0_WRITE_MAP
 from emulator.mapping.base_mapper import BaseMapper
 
 # Mapper is memory map router

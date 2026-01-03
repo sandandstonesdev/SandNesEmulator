@@ -3,7 +3,7 @@ from emulator.mapping.mapper_0 import Mapper0
 from emulator.board.bus import Bus
 from emulator.cpu.cpu import CPU
 from emulator.ppu.ppu import PPU
-from emulator.apu import APU
+from emulator.apu.apu import APU
 from emulator.cartridge.cartridge import Cartridge
 from emulator.ram import RAM
 from emulator.joypad import Joypad
@@ -11,10 +11,12 @@ from emulator.mapping.memory_map_router import MemoryMapRouter
 
 def test_cpu_tick_opcodes(mocker):
     interrupt_info = InterruptInfo()
-    ppu = PPU(interrupt_info)
-    apu = APU(interrupt_info)
+    io_register_router = mocker.MagicMock()
+    
+    joypad = Joypad(io_register_router)
+    ppu = PPU(io_register_router, interrupt_info)
+    apu = APU(io_register_router, interrupt_info)
     ram = RAM()
-    joypad = Joypad()
     memory_map_router = MemoryMapRouter()
     cartridge = Cartridge()
 

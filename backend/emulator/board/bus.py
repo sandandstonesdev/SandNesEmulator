@@ -1,7 +1,8 @@
 from __future__ import annotations
 import weakref
+from emulator.mapping.io_register_router import IORegisterRouter
 from emulator.mapping.nes_device import NESDevice
-from emulator.apu import APU
+from emulator.apu.apu import APU
 from emulator.cartridge.cartridge import Cartridge
 from emulator.joypad import Joypad
 from emulator.mapping.memory_map_router import MemoryMapRouter
@@ -91,5 +92,5 @@ class Bus:
         return self.ppu.get_frame()
 
     def update_controller(self, controller_state):
-        #self.joypad.update_state(controller_state)
+        self.joypad.update_state(controller_state)
         pass

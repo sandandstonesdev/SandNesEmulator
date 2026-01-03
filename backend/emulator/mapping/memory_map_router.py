@@ -1,4 +1,3 @@
-
 from emulator.mapping.device_maps import READ_DEVICE_MAP, WRITE_DEVICE_MAP
 
 class MemoryMapRouter:
