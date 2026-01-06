@@ -1,4 +1,4 @@
-from emulator.mapping.io_register_router import IORegisterRouter
+from emulator.mapping.register_mapping.io_register_router import IORegisterRouter
 
 
 class Joypad:
@@ -7,13 +7,14 @@ class Joypad:
         self.io_register_router = io_register_router
         self.shift_register = 0
         self.strobe = 0
+        self.buffered_state = 0
 
     def write(self, address, value):
         mapped_port = self.io_register_router.route_write(address, value)
         if mapped_port == IORegisterRouter.JOYPAD1:
             self.strobe = value
-            if self.strobe & 1:
-               self.shift_register = 0  # Reset shift register on strobe high
+            if self.strobe & 1: # Reset shift register on strobe high
+               self.shift_register = 0  
         return
 
     def read(self, address):
@@ -27,10 +28,8 @@ class Joypad:
         return 0x00
 
     def update_state(self, controller_state):
-        if self.strobe & 1:
-            self.map_controller_state_to_bits(controller_state)
-        
-    def map_controller_state_to_bits(self, controller_state):
-        # Process controller state (maped buttons to bits)
-        self.shift_register = 0
+        self.buffered_state = controller_state
+
+    def tick(self):
+        self.shift_register = self.buffered_state
         pass

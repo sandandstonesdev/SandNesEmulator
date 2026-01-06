@@ -1,14 +1,16 @@
-from emulator.mapping.io_register_router import IORegisterRouter
-from emulator.mapping.io_register_type import IORegisterType
+from emulator.ppu.ppu_frame import PPUFrame
+from emulator.ppu.ppu_bus import PPUBus
 from emulator.ppu.ppu_instructions import PPUInstructions
 from emulator.ppu.ppu_registers import PPURegisters
 from emulator.board.interrupt_info import InterruptInfo
 
+# Inject Cartridge or use some technique to read pattern_tables banks
+# Some mappers can control PPU ???
 class PPU:
-    def __init__(self, io_register_router: IORegisterRouter, interrupt_info: InterruptInfo):
-        self.io_register_router = io_register_router
-        self.ppu_registers = PPURegisters()
-        self.ppu_instructions = PPUInstructions(self.ppu_registers, interrupt_info)
+    def __init__(self, ppu_bus: PPUBus, interrupt_info: InterruptInfo):
+        self.ppu_bus = ppu_bus
+        self.ppu_registers = PPURegisters(ppu_bus)
+        self.ppu_instructions = PPUInstructions(self.ppu_registers, self.ppu_bus, interrupt_info)
         self.interrupt_info = interrupt_info
         # Object Attribute Memory (OAM) - 256 bytes
         self.OAM = [0x00] * 256  
@@ -20,50 +22,19 @@ class PPU:
     def reset(self):
         pass
 
-    # Filling flags OAM, nametable memory
-    def read(self, address):
-        mapped_port = self.ppu_registers.route_read(address)
-        if mapped_port == IORegisterType.PPUCTRL:
-            return self.ppu_instructions.read_ppu_control()
-        elif mapped_port == IORegisterType.PPUMASK:
-            return self.ppu_instructions.read_ppu_mask()
-        elif mapped_port == IORegisterType.PPUSTATUS:
-            return self.ppu_instructions.read_ppu_status()
-        elif mapped_port == IORegisterType.OAMADDR:
-            return self.ppu_instructions.read_oam_address()
-        elif mapped_port == IORegisterType.OAMDATA:
-            return self.ppu_instructions.read_oam_data()
-        elif mapped_port == IORegisterType.PPUSCROLL:
-            return self.ppu_instructions.read_ppu_scroll()
-        elif mapped_port == IORegisterType.PPUADDR:
-            return self.ppu_instructions.read_ppu_address()
-        elif mapped_port == IORegisterType.PPUDATA:
-            return self.ppu_instructions.read_ppu_data()
-        elif mapped_port == IORegisterType.OAMDMA:
-            return self.ppu_instructions.read_oam_dma()
+    def read_register(self, address):
+        value = self.ppu_instructions.read_register(address)
+        pass
 
-    def write(self, address, value):
-        mapped_port = self.io_.route_write(address)
-        if mapped_port == IORegisterType.PPUCTRL:
-            self.ppu_instructions.write_ppu_control(value)
-        elif mapped_port == IORegisterType.PPUMASK:
-            self.ppu_instructions.write_ppu_mask(value)
-        elif mapped_port == IORegisterType.PPUSTATUS:
-            self.ppu_instructions.write_ppu_status(value)
-        elif mapped_port == IORegisterType.OAMADDR:
-            self.ppu_instructions.write_oam_address(value)
-        elif mapped_port == IORegisterType.OAMDATA:
-            self.ppu_instructions.write_oam_data(value)
-        elif mapped_port == IORegisterType.PPUSCROLL:
-            self.ppu_instructions.write_ppu_scroll(value)
-        elif mapped_port == IORegisterType.PPUADDR:
-            self.ppu_instructions.write_ppu_address(value)
-        elif mapped_port == IORegisterType.PPUDATA:
-            self.ppu_instructions.write_ppu_data(value)
-        elif mapped_port == IORegisterType.OAMDMA:
-            self.ppu_instructions.write_oam_dma(value)
+    def write_register(self, address, value):
+        self.ppu_instructions.write_register(address, value)
+        pass
 
-    def transfer_oam(self, data):
+    # For Pattern Tables and Custom NameTables
+    def read_cartidge(self, address):
+        pass
+
+    def write_cartidge(self, address, value):
         pass
 
     def tick(self):
@@ -74,3 +45,8 @@ class PPU:
 
     def render_frame(self):
         pass
+
+    def output_frame(self) -> PPUFrame: 
+        # Outputted into TV
+        ppu_frame = PPUFrame()
+        return ppu_frame

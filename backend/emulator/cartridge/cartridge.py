@@ -1,4 +1,4 @@
-from emulator.mapping.mapper_0 import Mapper0
+from emulator.mapping.cartridge_mapping.mapper_0 import Mapper0
 from emulator.cartridge.chr_rom_bank import CHRROMBank
 from emulator.cartridge.prg_rom_bank import PrgRomBank
 
@@ -20,6 +20,7 @@ class Cartridge:
         self.chr_rom = None
         self.mapper_id = 0
         self.mapper = None
+        self.interrupt_vectors = []
 
     def insert_rom_file(self, rom_path):
         # Read iNES Header

@@ -1,6 +1,6 @@
 from enum import Enum, auto
 
-class NESDevice(Enum):
+class CPUSpaceMapping(Enum):
     RAM_ZERO_PAGE = auto()
     RAMSTACK = auto()
     RAM_GENERAL_PURPOSE = auto()

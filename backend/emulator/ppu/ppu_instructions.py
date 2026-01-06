@@ -1,17 +1,44 @@
+from emulator.ppu.ppu_bus import PPUBus
 from emulator.ppu.ppu_registers import PPURegisters
 from emulator.board.interrupt_info import InterruptInfo
 
 class PPUInstructions:
-    def __init__(self, ppu_registers: PPURegisters, interrupt_info: InterruptInfo):
+    def __init__(self, ppu_registers: PPURegisters, ppu_bus: PPUBus, interrupt_info: InterruptInfo):
+        self.ppu_registers = ppu_registers
+        self.ppu_bus = ppu_bus
+        self.interrupt_info = interrupt_info
         self.cycles = 0
         pass
 
-    # PPU Tick - Sync
-    # Every fith frame CPU can get Value of VBlank Status (PPUSTATUS))
+    def reset(self):
+        self.ppu_registers.reset()
+
     def read_register(self, address):
-        pass
+        register_id = self.get_ppu_register_id(address)
+        if register_id == 0:
+            return 0 # Error
+            # Implement reading logic for this register
+        else:
+            pass
+
+        # Handle address latching
+        # Handle register read and Open-bus behavior
+        # Read from bus (processed address and value)
+
+    def get_ppu_register_id(self, address: int) -> int:
+      return self.ppu_registers.get_ppu_register_id(address)
 
     def write_register(self, address, value):
+        register_id = self.get_ppu_register_id(address)
+        if register_id == 0:
+            return 0 # Error
+            # Implement reading logic for this register
+        else:
+            pass
+        
+        # Handle address latching
+        # Handle register write and Open-bus behavior
+        # Write to bus (processed address and value)
         pass
 
     def transfer_oam(self, data):

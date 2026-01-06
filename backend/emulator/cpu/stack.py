@@ -7,13 +7,13 @@ class Stack:
         self.pointer = 0xFF
 
     def push(self, value):
-        self.bus.ram_write(0x0100 + self.pointer, value)
+        self.bus.write(0x0100 + self.pointer, value)
         self.pointer -= 1
 
     def pop(self):
         if self.pointer < 0xFF:
             self.pointer += 1
-            return self.bus.ram_read(0x0100 + self.pointer)
+            return self.bus.read(0x0100 + self.pointer)
         else:
             raise IndexError("Pop from empty stack")
 

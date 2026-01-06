@@ -1,7 +1,7 @@
-from emulator.mapping.io_register_type import IORegisterType
+from emulator.mapping.register_mapping.io_register_type import IORegisterType
 
 # NES Mapper 0 (NROM) memory map
-APU_READ_MAP = {
+APU_REGISTER_READ_MAP = {
     (0x4000): IORegisterType.APUSQUARE1ENV,
     (0x4001): IORegisterType.APUSQUARE1SWEEP,
     (0x4002): IORegisterType.APUSQUARE1LO,
@@ -26,7 +26,7 @@ APU_READ_MAP = {
     (0x4017): IORegisterType.APUFRAMECOUNTER,
 }
 
-APU_WRITE_MAP = {
+APU_REGISTER_WRITE_MAP = {
     (0x4000): IORegisterType.APUSQUARE1ENV,
     (0x4001): IORegisterType.APUSQUARE1SWEEP,
     (0x4002): IORegisterType.APUSQUARE1LO,
