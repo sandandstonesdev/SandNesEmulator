@@ -1,7 +1,7 @@
-from emulator.mapping.io_register_type import IORegisterType
+from emulator.mapping.register_mapping.io_register_type import IORegisterType
 
 # NES Mapper 0 (NROM) memory map
-PPU_READ_MAP = {
+PPU_REGISTER_READ_MAP = {
     (0x2000): IORegisterType.PPUCTRL,  # PPU Control Register
     (0x2001): IORegisterType.PPUMASK,   # PPU Mask Register
     (0x2002): IORegisterType.PPUSTATUS, # PPU Status Register
@@ -13,7 +13,7 @@ PPU_READ_MAP = {
     (0x4014): IORegisterType.OAMDMA,    # OAM DMA Register
 }
 
-PPU_WRITE_MAP = {
+PPU_REGISTER_WRITE_MAP = {
     (0x2000): IORegisterType.PPUCTRL,  # PPU Control Register
     (0x2001): IORegisterType.PPUMASK,   # PPU Mask Register
     (0x2002): IORegisterType.PPUSTATUS, # PPU Status Register

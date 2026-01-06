@@ -46,7 +46,7 @@ class InstructionProcessor:
 
             self.registers.push_stack(self.registers.status.get_byte())
             self.registers.set_flag(INTERRUPT, 1)
-            self.registers.set_pc(self.bus.ram_read(0xFFFF), self.bus.ram_read(0xFFFE))
+            self.registers.set_pc(self.bus.read(0xFFFF), self.bus.read(0xFFFE))
             self.cycles += 7
 
     def nmi(self):
@@ -54,7 +54,7 @@ class InstructionProcessor:
         self.registers.push_status()
 
         self.registers.set_flag(INTERRUPT, 1)
-        self.registers.set_pc(self.bus.ram_read(0xFFFB), self.bus.ram_read(0xFFFA))
+        self.registers.set_pc(self.bus.read(0xFFFB), self.bus.read(0xFFFA))
         self.cycles += 8
 
     #Arithmetic/Logic:

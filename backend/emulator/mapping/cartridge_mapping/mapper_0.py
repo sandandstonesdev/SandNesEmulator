@@ -1,5 +1,5 @@
-from emulator.mapping.mapper_0_maps import MAPPER_0_READ_MAP, MAPPER_0_WRITE_MAP
-from emulator.mapping.base_mapper import BaseMapper
+from emulator.mapping.cartridge_mapping.mapper_0_maps import MAPPER_0_READ_MAP, MAPPER_0_WRITE_MAP
+from emulator.mapping.cartridge_mapping.base_mapper import BaseMapper
 
 # Mapper is memory map router
 # Input address from CPU/PPU/APU/Joypad

@@ -34,15 +34,15 @@ class LoadStoreOps:
 
     def sta_op(self, decoded_data):
         effective_address = self.registers.adh << 8 | self.registers.adl
-        self.bus.ram_write(effective_address, self.registers.a)
+        self.bus.write(effective_address, self.registers.a)
         self.registers.cycles += decoded_data.cycles - 1
 
     def stx_op(self, decoded_data):
         effective_address = self.registers.adh << 8 | self.registers.adl
-        self.bus.ram_write(effective_address, self.registers.x)
+        self.bus.write(effective_address, self.registers.x)
         self.registers.cycles += decoded_data.cycles - 1
 
     def sty_op(self, decoded_data):
         effective_address = self.registers.adh << 8 | self.registers.adl
-        self.bus.ram_write(effective_address, self.registers.y)
+        self.bus.write(effective_address, self.registers.y)
         self.registers.cycles += decoded_data.cycles - 1
