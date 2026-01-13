@@ -24,15 +24,19 @@ class Bus:
         self.cpu_map_router = cpu_map_router
         self.master_clock = 0
         
+    def read_double_byte(self, address):
+        low_byte = self.read(address)
+        high_byte = self.read(address + 1)
+        return (high_byte << 8) | low_byte
 
     def read(self, address):
         mapped_space = self.cpu_map_router.route_read(address)
         if mapped_space == CPUSpaceMapping.CARTRIDGE_SPACE:
             return self.cartridge.read(address)
         elif mapped_space == CPUSpaceMapping.PPU_REGISTERS:
-            return self.ppu.read(address)
+            return self.ppu.read_register(address)
         elif mapped_space == CPUSpaceMapping.APU_IO_REGISTERS:
-            return self.apu.read(address)
+            return self.apu.read_register(address)
         elif mapped_space == CPUSpaceMapping.JOYPAD1:
             return self.joypad.read(address)
         elif mapped_space == CPUSpaceMapping.JOYPAD2_NOT_SUPPORTED:
@@ -50,9 +54,9 @@ class Bus:
         if mapped_space == CPUSpaceMapping.CARTRIDGE_SPACE:
             return self.cartridge.write_prg(address, value)
         elif mapped_space == CPUSpaceMapping.PPU_REGISTERS:
-             return self.ppu.write(address, value)
+             return self.ppu.write_register(address, value)
         elif mapped_space == CPUSpaceMapping.APU_IO_REGISTERS:
-            return self.apu.write(address, value)
+            return self.apu.write_register(address, value)
         elif mapped_space == CPUSpaceMapping.JOYPAD1:
             return self.joypad.write(address, value)
         elif mapped_space == CPUSpaceMapping.RAM_ZERO_PAGE:

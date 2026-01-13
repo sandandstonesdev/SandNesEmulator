@@ -9,74 +9,67 @@ class AddrOps:
 
     def fetch_opcode_op(self):
             opcode = self.bus.read(self.registers.pc)
-            self.registers.pc += 1
-            self.registers.cycles += 1
+            self.registers.inc_pc()
+            self.registers.inc_cycles(1)
             return opcode
 
+    # Get operand location by mode
     def operand_fetch_op(self, decoded_data: DecodedDataDTO):
         if decoded_data.addr_mode == 'IMM':
-            self.registers.adl = self.registers.pc
-            self.registers.adh = 0
-            self.registers.d = self.bus.read(self.registers.adl)
-            self.registers.pc += 1
-            self.registers.cycles += 1
+            self.registers.set_addr(0, self.registers.pc)
+            self.registers.data = self.bus.read(self.registers.pc)
+            self.registers.inc_pc()
+            self.registers.inc_cycles(1)
         elif decoded_data.addr_mode == 'ZP':
-            self.registers.adl = self.bus.read(self.registers.pc)
-            self.registers.adh = 0
-            addr = (self.registers.adh << 8) | self.registers.adl
-            self.registers.d = self.bus.read(addr)
-            self.registers.pc += 1
-            self.registers.cycles += 1
+            self.registers.set_addr(0, self.bus.read(self.registers.pc))
+            addr =  self.registers.get_addr()
+            self.registers.data = self.bus.read(addr)
+            self.registers.inc_pc()
+            self.registers.inc_cycles(1)
         elif decoded_data.addr_mode == 'ZPX':
             zp_addr = (self.bus.read(self.registers.pc) + self.registers.x) & 0xFF
-            self.registers.adl = zp_addr
-            self.registers.adh = 0
-            addr = (self.registers.adh << 8) | self.registers.adl
-            self.registers.d = self.bus.read(addr)
-            self.registers.pc += 1
-            self.registers.cycles += 1
+            self.registers.set_addr(0, zp_addr)
+            addr = self.registers.get_addr()
+            self.registers.data = self.bus.read(addr)
+            self.registers.inc_pc()
+            self.registers.inc_cycles(1)
         elif decoded_data.addr_mode == 'ABS':
-            self.registers.adl = self.bus.read(self.registers.pc)
-            self.registers.adh = self.bus.read(self.registers.pc + 1)
-            addr = (self.registers.adh << 8) | self.registers.adl
-            self.registers.d = self.bus.read(addr)
-            self.registers.pc += 2
-            self.registers.cycles += 1
+            self.registers.set_addr(self.bus.read(self.registers.pc + 1), self.bus.read(self.registers.pc))
+            addr = self.registers.get_addr()
+            self.registers.data = self.bus.read(addr)
+            self.registers.inc_pc(2)
+            self.registers.inc_cycles(1)
         elif decoded_data.addr_mode == 'ABSX':
             low = self.bus.read(self.registers.pc)
             high = self.bus.read(self.registers.pc + 1)
             addr = ((high << 8) | low) + self.registers.x
-            self.registers.adl = addr & 0xFF
-            self.registers.adh = (addr >> 8) & 0xFF
-            self.registers.d = self.bus.read((self.registers.adh << 8) | self.registers.adl)
-            self.registers.pc += 2
-            self.registers.cycles += 1
+            self.registers.set_addr((addr >> 8) & 0xFF, addr & 0xFF)
+            self.registers.data = self.bus.read(self.registers.get_addr())
+            self.registers.inc_pc(2)
+            self.registers.inc_cycles(1)
         elif decoded_data.addr_mode == 'ABSY':
             low = self.bus.read(self.registers.pc)
             high = self.bus.read(self.registers.pc + 1)
             addr = ((high << 8) | low) + self.registers.y
-            self.registers.adl = addr & 0xFF
-            self.registers.adh = (addr >> 8) & 0xFF
-            self.registers.d = self.bus.read((self.registers.adh << 8) | self.registers.adl)
-            self.registers.pc += 2
-            self.registers.cycles += 1
+            self.registers.set_addr((addr >> 8) & 0xFF, addr & 0xFF)
+            self.registers.data = self.bus.read(self.registers.get_addr())
+            self.registers.inc_pc(2)
+            self.registers.inc_cycles(1)
         elif decoded_data.addr_mode == 'IZX':
             zp_ptr = (self.bus.read(self.registers.pc) + self.registers.x) & 0xFF
             low = self.bus.read(zp_ptr)
             high = self.bus.read((zp_ptr + 1) & 0xFF)
-            self.registers.adl = low
-            self.registers.adh = high
-            addr = (self.registers.adh << 8) | self.registers.adl
-            self.registers.d = self.bus.read(addr)
-            self.registers.pc += 1
-            self.registers.cycles += 1
+            self.registers.set_addr(high, low)
+            addr = self.registers.get_addr()
+            self.registers.data = self.bus.read(addr)
+            self.registers.inc_pc()
+            self.registers.inc_cycles(1)
         elif decoded_data.addr_mode == 'IZY':
             zp_ptr = self.bus.read(self.registers.pc)
             low = self.bus.read(zp_ptr)
             high = self.bus.read((zp_ptr + 1) & 0xFF)
             addr = ((high << 8) | low) + self.registers.y
-            self.registers.adl = addr & 0xFF
-            self.registers.adh = (addr >> 8) & 0xFF
-            self.registers.d = self.bus.read((self.registers.adh << 8) | self.registers.adl)
-            self.registers.pc += 1
-            self.registers.cycles += 1
+            self.registers.set_addr((addr >> 8) & 0xFF, addr & 0xFF)
+            self.registers.data = self.bus.read(self.registers.get_addr())
+            self.registers.inc_pc()
+            self.registers.inc_cycles(1)

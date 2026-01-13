@@ -18,4 +18,4 @@ class Stack:
             raise IndexError("Pop from empty stack")
 
     def reset(self):
-        self.pointer = 0xFF
+        self.pointer = 0xFD

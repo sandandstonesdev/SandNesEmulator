@@ -1,3 +1,4 @@
+from emulator.mapping.cartridge_mapping.cartridge_memory_type import CartridgeMemoryType
 from emulator.mapping.cartridge_mapping.mapper_0 import Mapper0
 from emulator.cartridge.chr_rom_bank import CHRROMBank
 from emulator.cartridge.prg_rom_bank import PrgRomBank
@@ -16,8 +17,8 @@ class Cartridge:
         self.alternarive_nametable_layout = False
         self.tv_system = None
 
-        self.prg_rom = None
-        self.chr_rom = None
+        self.prg_rom_banks = []
+        self.chr_rom_banks = []
         self.mapper_id = 0
         self.mapper = None
         self.interrupt_vectors = []
@@ -56,27 +57,59 @@ class Cartridge:
         if self.trainer:
             read_index += 512
 
-        self.prg_rom = PrgRomBank(data[read_index:read_index + (self.prg_rom_chunks * 16384)])
-        read_index += self.prg_rom_chunks * 16384
-        self.chr_rom = CHRROMBank(data[read_index:read_index + (self.chr_rom_chunks * 8192)])
-        read_index += self.chr_rom_chunks * 8192
+        prg_base_addr = 0x8000
+        prg_bank_size = 0x3FFF
+        for i in range(self.prg_rom_chunks):
+            read_address = read_index + (i * prg_bank_size) # To 0x4010
+            prg_rom_bank = PrgRomBank(data[read_address:read_address + prg_bank_size],
+                                      base_address = prg_base_addr + (i * prg_bank_size))
+            self.prg_rom_banks.append(prg_rom_bank)
 
+        read_index += self.prg_rom_chunks * prg_bank_size
+
+        for i in range(self.chr_rom_chunks):
+            read_address = read_index + (i * 8192)
+            chr_rom_bank = CHRROMBank(data[read_address:read_address + 8192])
+            self.chr_rom_banks.append(chr_rom_bank)
+            read_index += 8192
+
+        if self.chr_rom_chunks == 1:
+            # Mirror single bank to fill 8KB space
+            chr_ram_bank = CHRROMBank(bytearray(8192), base_address=0x1000)
+            self.chr_rom_banks.append(chr_ram_bank)
+
+        
 
     def read(self, address):
         mapped_device = self.mapper.map_read(address)
-        if mapped_device.name == 'PRG_ROM':
-            return self.prg_rom.read(address)
-        elif mapped_device.name == 'CHR_ROM':
-            return self.chr_rom.read(address)
-
+        if mapped_device == CartridgeMemoryType.PRG_ROM_BANK1:
+            prg_rom_bank: PrgRomBank = self.prg_rom_banks[0]
+            return prg_rom_bank.read(address)
+        if mapped_device == CartridgeMemoryType.PRG_ROM_BANK2:
+            prg_rom_bank: PrgRomBank = self.prg_rom_banks[1]
+            return prg_rom_bank.read(address)
+        elif mapped_device == CartridgeMemoryType.CHR_ROM_BANK1:
+            chr_rom_bank: CHRROMBank = self.chr_rom_banks[0]
+            return chr_rom_bank.read(address)
+        elif mapped_device == CartridgeMemoryType.CHR_ROM_BANK2:
+            chr_rom_bank: CHRROMBank = self.chr_rom_banks[1]
+            return chr_rom_bank.read(address)
         return 0x00
 
     def write(self, address, value):
-        mapped_device = self.mapper.route_write(address)
-        if mapped_device.name == 'PRG_ROM':
-            self.prg_rom.write(address, value)
-        elif mapped_device.name == 'CHR_ROM':
-            self.chr_rom.write(address, value)
+        mapped_device = self.mapper.map_write(address)
+        if mapped_device == CartridgeMemoryType.PRG_ROM_BANK1:
+            prg_rom_bank: PrgRomBank = self.prg_rom_banks[0]
+            prg_rom_bank.write(address, value)
+        elif mapped_device == CartridgeMemoryType.PRG_ROM_BANK2:
+            prg_rom_bank: PrgRomBank = self.prg_rom_banks[1]
+            prg_rom_bank.write(address, value)
+        elif mapped_device == CartridgeMemoryType.CHR_ROM_BANK1:
+            chr_rom_bank: CHRROMBank = self.chr_rom_banks[0]
+            chr_rom_bank.write(address, value)
+        elif mapped_device == CartridgeMemoryType.CHR_ROM_BANK2:
+            chr_rom_bank: CHRROMBank = self.chr_rom_banks[1]
+            chr_rom_bank.write(address, value)
 
         # different read address is ignored
     

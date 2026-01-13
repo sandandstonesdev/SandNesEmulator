@@ -1,11 +1,16 @@
 from emulator.board.board import Board
 
 def read_dummy_rom():
+    prg_rom = (
+        bytes([0xEA, 0xEA, 0xEA]) +  # NOP instructions at start
+        b'\x00' * (32768 - 3 - 4) +  # Fill PRG ROM except last 4 bytes
+        bytes([0x00, 0x80, 0x00, 0x00])  # Reset vector at 0xFFFC: 0x8000 (little endian), then two unused bytes
+    )
     fake_rom_data = (
         b'NES\x1A' +
         bytes([2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) +
-        bytes([0xEA, 0xEA, 0xEA]) + b'\x00' * (32768 - 3) + # PRG ROM
-        b'\x00' * 8192 # CHR ROM
+        prg_rom +
+        b'\x00' * 8192  # CHR ROM
     )
     return fake_rom_data
 

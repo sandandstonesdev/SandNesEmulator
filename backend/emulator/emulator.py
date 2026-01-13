@@ -1,30 +1,37 @@
 from emulator.board.board import Board
 
 class Emulator:
-    def __init__(self, name):
+    def __init__(self):
+        self.is_on = False
         self.board = Board()
-        pass
 
-    # Open ROM In GUI
     def insert_cartridge(self, cartridge):
-        self.board.insert_cartridge(cartridge)
+        self.board.insert_rom(cartridge)
 
-    # On Button in GUI
     def power_on(self):
         self.board.power_on()
+        self.is_on = True
 
-    # On Reset in GUI
     def reset(self):
         self.board.reset()
+        self.is_on = True
 
-    # Off Button in GUI
-    def power_off(self):
-        self.board.power_off()
+    def tick(self):
+        if not self.is_on:
+            return None
+        
+        self.board.tick()
 
-    # Get Frame (maybe batch get is better for frontend performance)
-    def get_frame(self):
+    def run_frame(self):
+        TICKS_PER_FRAME = 29780
+        for _ in range(TICKS_PER_FRAME):
+            self.tick()
+
         return self.board.get_frame()
 
-    # Input controller state from GUI
+    def power_off(self):
+        self.board.power_off()
+        self.is_on = False
+
     def input_controller_state(self, controller_state):
-        self.board.input_controller_state(controller_state)
+        self.board.update_controller(controller_state)
