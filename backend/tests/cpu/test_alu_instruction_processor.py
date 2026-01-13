@@ -18,6 +18,9 @@ class DummyBus(Bus):
 
 def make_processor():
     bus = DummyBus()
+    # Set reset vector to 0x0000
+    bus.memory[0xFFFC] = 0x00  # low byte
+    bus.memory[0xFFFD] = 0x00  # high byte
     registers = Registers(bus)
     return InstructionProcessor(registers, bus), registers, bus
 

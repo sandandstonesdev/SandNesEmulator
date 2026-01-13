@@ -39,23 +39,15 @@ class InstructionProcessor:
         else:
             pass  # or handle unknown instruction
     
-    def irq(self):
-        if self.registers.get_flag(INTERRUPT) == 0:
-            self.registers.push_pc()
-            self.registers.push_status()
+    def reset(self):
+        self.registers.reset()
 
-            self.registers.push_stack(self.registers.status.get_byte())
-            self.registers.set_flag(INTERRUPT, 1)
-            self.registers.set_pc(self.bus.read(0xFFFF), self.bus.read(0xFFFE))
-            self.cycles += 7
+    def irq(self):
+        self.registers.irq()
+
 
     def nmi(self):
-        self.registers.push_pc()
-        self.registers.push_status()
-
-        self.registers.set_flag(INTERRUPT, 1)
-        self.registers.set_pc(self.bus.read(0xFFFB), self.bus.read(0xFFFA))
-        self.cycles += 8
+        self.registers.nmi()
 
     #Arithmetic/Logic:
     def cpu_adc(self, decoded_data: DecodedDataDTO):

@@ -6,23 +6,20 @@
   .byte $00
   .byte $00, $00, $00, $00, $00, $00, $00 ; Padding
 
-.segment "CHARS"
+.segment "CHRDATA"
   .incbin "alphabet.chr"
   .incbin "alphabet.chr"
 
 .segment "VECTORS"
-  .addr nmi
-  .addr reset
-  .addr 0 ; IRQ vector unused
+  .word nmi
+  .word reset
+  .word 0 ; IRQ vector unused
 
 .segment "ZEROPAGE"
   spr_base_x : .res 1
   spr_base_y : .res 1
 
-.segment "STARTUP"
-
 .segment "CODE"
-
 reset:
   sei
   cld
@@ -143,7 +140,7 @@ nmi:
   sta $4014
   rti
 
-
+.segment "PRGDATA"
 ; 2109 - 2148 Offsets
 message:
  ; ASCII: "SANDNES EMULATOR"
@@ -160,4 +157,3 @@ palettes:
   .byte $0F, $19, $29, $39
   .byte $0F, $19, $29, $39
   .byte $0F, $19, $29, $39
-

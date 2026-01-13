@@ -1,0 +1,16 @@
+al 0080B2 .game_loop
+al 0080A8 .enable_rendering
+al 00809A .not_adjust
+al 008082 .adjust
+al 0080C0 .message
+al 008060 .sprite_init
+al 0080D4 .palettes
+al 008049 .@pal_loop
+al 00803A .main
+al 008035 .vblankwait2
+al 008019 .clear_memory
+al 008014 .vblankwait1
+al 000001 .spr_base_y
+al 000000 .spr_base_x
+al 008000 .reset
+al 0080B5 .nmi
