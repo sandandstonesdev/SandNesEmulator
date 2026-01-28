@@ -107,3 +107,90 @@ def test_ora():
     assert regs.p.Z == 0
     assert regs.p.N == 0
     
+def test_inc():
+    proc, regs, bus = make_processor()
+    bus.memory[0x0010] = 0xFF
+    opcode = 0xE6  # INC zero page
+    bus.memory[0x0000] = opcode
+    bus.memory[0x0001] = 0x10
+    regs.pc = 0x0000
+    fetch_opcode_opcode = proc.fetch_opcode()
+    assert fetch_opcode_opcode == opcode
+    decoded = proc.decode(opcode, regs.pc)
+    proc.addr_op.operand_fetch_op(decoded)
+    proc.cpu_inc(decoded)
+    assert bus.memory[0x0010] == 0x00
+    assert regs.p.Z == 1
+    assert regs.p.N == 0
+
+def test_dec():
+    proc, regs, bus = make_processor()
+    bus.memory[0x0020] = 0x01
+    opcode = 0xC6  # DEC zero page
+    bus.memory[0x0000] = opcode
+    bus.memory[0x0001] = 0x20
+    regs.pc = 0x0000
+    fetch_opcode_opcode = proc.fetch_opcode()
+    assert fetch_opcode_opcode == opcode
+    decoded = proc.decode(opcode, regs.pc)
+    proc.addr_op.operand_fetch_op(decoded)
+    proc.cpu_dec(decoded)
+    assert bus.memory[0x0020] == 0x00
+    assert regs.p.Z == 1
+    assert regs.p.N == 0
+
+def test_inx():
+    proc, regs, bus = make_processor()
+    regs.x = 0xFF
+    opcode = 0xE8  # INX
+    bus.memory[0x0000] = opcode
+    regs.pc = 0x0000
+    fetch_opcode_opcode = proc.fetch_opcode()
+    assert fetch_opcode_opcode == opcode
+    decoded = proc.decode(opcode, regs.pc)
+    proc.cpu_inx(decoded)
+    assert regs.x == 0x00
+    assert regs.p.Z == 1
+    assert regs.p.N == 0
+
+def test_dex():
+    proc, regs, bus = make_processor()
+    regs.x = 0x01
+    opcode = 0xCA  # DEX
+    bus.memory[0x0000] = opcode
+    regs.pc = 0x0000
+    fetch_opcode_opcode = proc.fetch_opcode()
+    assert fetch_opcode_opcode == opcode
+    decoded = proc.decode(opcode, regs.pc)
+    proc.cpu_dex(decoded)
+    assert regs.x == 0x00
+    assert regs.p.Z == 1
+    assert regs.p.N == 0
+
+def test_iny():
+    proc, regs, bus = make_processor()
+    regs.y = 0xFF
+    opcode = 0xC8  # INY
+    bus.memory[0x0000] = opcode
+    regs.pc = 0x0000
+    fetch_opcode_opcode = proc.fetch_opcode()
+    assert fetch_opcode_opcode == opcode
+    decoded = proc.decode(opcode, regs.pc)
+    proc.cpu_iny(decoded)
+    assert regs.y == 0x00
+    assert regs.p.Z == 1
+    assert regs.p.N == 0
+
+def test_dey():
+    proc, regs, bus = make_processor()
+    regs.y = 0x01
+    opcode = 0x88  # DEY
+    bus.memory[0x0000] = opcode
+    regs.pc = 0x0000
+    fetch_opcode_opcode = proc.fetch_opcode()
+    assert fetch_opcode_opcode == opcode
+    decoded = proc.decode(opcode, regs.pc)
+    proc.cpu_dey(decoded)
+    assert regs.y == 0x00
+    assert regs.p.Z == 1
+    assert regs.p.N == 0

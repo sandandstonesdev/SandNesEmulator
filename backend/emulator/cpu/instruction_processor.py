@@ -14,8 +14,8 @@ class InstructionProcessor:
         self.registers = registers
         self.bus = bus
         self.addr_op = AddrOps(registers, bus)
-        self.alu_ops = ALUOps(registers)
-        self.load_store_ops = LoadStoreOps(registers, bus)
+        self.alu_ops = ALUOps(registers, self.addr_op)
+        self.load_store_ops = LoadStoreOps(registers, bus, self.addr_op)
     
     def fetch_opcode(self):
         return self.addr_op.fetch_opcode_op()
@@ -93,5 +93,29 @@ class InstructionProcessor:
     
     def cpu_sty(self, decoded_data: DecodedDataDTO):
         self.load_store_ops.sty_op(decoded_data)
+        return True
+    
+    def cpu_inc(self, decoded_data: DecodedDataDTO):
+        self.alu_ops.inc_op(decoded_data)
+        return True
+    
+    def cpu_dec(self, decoded_data: DecodedDataDTO):
+        self.alu_ops.dec_op(decoded_data)
+        return True
+    
+    def cpu_inx(self, decoded_data: DecodedDataDTO):
+        self.alu_ops.inx_op(decoded_data)
+        return True
+    
+    def cpu_dex(self, decoded_data: DecodedDataDTO):
+        self.alu_ops.dex_op(decoded_data)
+        return True
+    
+    def cpu_iny(self, decoded_data: DecodedDataDTO):
+        self.alu_ops.iny_op(decoded_data)
+        return True
+    
+    def cpu_dey(self, decoded_data: DecodedDataDTO):
+        self.alu_ops.dey_op(decoded_data)
         return True
     

@@ -39,10 +39,10 @@ class Board:
         self.joypad.tick()
         # Note: CPU/PPU => 1/3
         self.cpu.tick()
-        for _ in range(3):
-            self.ppu.tick()
+        #for _ in range(3):
+        #    self.ppu.tick()
         
-        self.apu.tick()
+        #self.apu.tick()
         
         self.master_clock += 1
 
