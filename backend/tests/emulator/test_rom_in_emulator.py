@@ -9,10 +9,9 @@ def test_prgrom_loading_in_emulator(mocker):
     emulator.power_on()
     
     if emulator.is_on:
-        for i in range(10): # Check if 10 ticks run without issues
+        for i in range(10):
             emulator.tick()
             
     emulator.power_off()
 
-    # If no exceptions
     assert True

@@ -20,7 +20,7 @@ class AddrOps:
             self.registers.data = self.bus.read(self.registers.pc)
             self.registers.inc_pc()
             self.registers.inc_cycles(1)
-        elif decoded_data.addr_mode == 'ZP':
+        elif decoded_data.addr_mode == 'ZP0':
             self.registers.set_addr(0, self.bus.read(self.registers.pc))
             addr =  self.registers.get_addr()
             self.registers.data = self.bus.read(addr)
@@ -72,4 +72,34 @@ class AddrOps:
             self.registers.set_addr((addr >> 8) & 0xFF, addr & 0xFF)
             self.registers.data = self.bus.read(self.registers.get_addr())
             self.registers.inc_pc()
+            self.registers.inc_cycles(1)
+
+    def result_store_op(self, decoded_data: DecodedDataDTO):
+        if decoded_data.addr_mode == 'ZP0':
+            addr = self.registers.get_addr()
+            self.bus.write(addr, self.registers.data)
+            self.registers.inc_cycles(1)
+        elif decoded_data.addr_mode == 'ZPX':
+            addr = self.registers.get_addr()
+            self.bus.write(addr, self.registers.data)
+            self.registers.inc_cycles(1)
+        elif decoded_data.addr_mode == 'ABS':
+            addr = self.registers.get_addr()
+            self.bus.write(addr, self.registers.data)
+            self.registers.inc_cycles(1)
+        elif decoded_data.addr_mode == 'ABSX':
+            addr = self.registers.get_addr()
+            self.bus.write(addr, self.registers.data)
+            self.registers.inc_cycles(1)
+        elif decoded_data.addr_mode == 'ABSY':
+            addr = self.registers.get_addr()
+            self.bus.write(addr, self.registers.data)
+            self.registers.inc_cycles(1)
+        elif decoded_data.addr_mode == 'IZX':
+            addr = self.registers.get_addr()
+            self.bus.write(addr, self.registers.data)
+            self.registers.inc_cycles(1)
+        elif decoded_data.addr_mode == 'IZY':
+            addr = self.registers.get_addr()
+            self.bus.write(addr, self.registers.data)
             self.registers.inc_cycles(1)

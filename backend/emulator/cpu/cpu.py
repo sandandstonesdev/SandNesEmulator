@@ -43,8 +43,8 @@ class CPU:
             nmi_interrupt.requested = False
 
         if irq_interrupt.requested and \
-                 irq_interrupt.is_enabled() and \
+                 irq_interrupt.enabled and \
                  not self.registers.get_flag(INTERRUPT) and \
-                 not irq_interrupt.is_pending():
+                 not irq_interrupt.requested:
             self.instructions.irq()
             irq_interrupt.requested = False
